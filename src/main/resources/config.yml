@@ -1,0 +1,26 @@
+Nether:
+  Members:
+    - player1
+    - player2
+    - player3
+  Coordinates:
+    X: 36
+    Y: 44
+    Z: 13
+End:
+  Members:
+    - player4
+    - player5
+  Coordinates:
+    X: 0
+    Y: 65
+    Z: 0
+Overworld:
+  Members:
+    - player6
+    - player7
+    - player8
+  Coordinates:
+    X: 0
+    Y: 67
+    Z: 0

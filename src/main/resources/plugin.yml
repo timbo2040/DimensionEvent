@@ -1,0 +1,4 @@
+name: DimensionEvent
+version: '${project.version}'
+main: com.tiptow.Main
+api-version: '1.20'
