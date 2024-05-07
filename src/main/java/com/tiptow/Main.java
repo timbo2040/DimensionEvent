@@ -17,8 +17,8 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,8 +40,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        // Save config
-        saveConfig();
+        // No need to save config here, only save when necessary
     }
 
     @EventHandler
@@ -62,6 +61,7 @@ public class Main extends JavaPlugin implements Listener {
             teleportedPlayers.add(player.getUniqueId());
         }
     }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -97,8 +97,23 @@ public class Main extends JavaPlugin implements Listener {
             Team team = scoreboard.getTeam(teamName);
             if (team == null) {
                 team = scoreboard.registerNewTeam(teamName);
-                team.setPrefix(ChatColor.RED + "[" + teamName + "] ");
             }
+
+            String prefixColor = ChatColor.RESET.toString(); // Default color if not specified
+            switch (teamName.toLowerCase()) {
+                case "nether":
+                    prefixColor = ChatColor.DARK_RED.toString();
+                    break;
+                case "end":
+                    prefixColor = ChatColor.GOLD.toString();
+                    break;
+                case "overworld":
+                    prefixColor = ChatColor.DARK_GREEN.toString();
+                    break;
+            }
+
+            team.setPrefix(prefixColor + "[" + teamName + "] ");
+            team.setColor(ChatColor.getByChar(prefixColor.charAt(1)));
         }
     }
 
@@ -123,20 +138,20 @@ public class Main extends JavaPlugin implements Listener {
         double x, y, z;
 
         // Get dimension and coordinates based on team
-        switch (teamName) {
-            case "Nether":
+        switch (teamName.toLowerCase()) {
+            case "nether":
                 world = Bukkit.getWorld("world_nether");
                 x = config.getDouble("Nether.Coordinates.X");
                 y = config.getDouble("Nether.Coordinates.Y");
                 z = config.getDouble("Nether.Coordinates.Z");
                 break;
-            case "End":
+            case "end":
                 world = Bukkit.getWorld("world_the_end");
                 x = config.getDouble("End.Coordinates.X");
                 y = config.getDouble("End.Coordinates.Y");
                 z = config.getDouble("End.Coordinates.Z");
                 break;
-            case "Overworld":
+            case "overworld":
             default:
                 world = Bukkit.getWorld("world");
                 x = config.getDouble("Overworld.Coordinates.X");
